@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Tell this dumbass who you are
+      - name: Set committer identity
         run: |
           git config user.email "gut-actions@elisharudenkov.com"
           git config user.name "GitHub Actions"
@@ -23,17 +23,10 @@ jobs:
           git remote add upstream https://github.com/sussy-code/smov.git
           git fetch upstream
           git checkout main
-          git merge upstream/main --allow-unrelated-histories --no-commit
-          if [ $? -ne 0 ]; then
-            echo "Merge conflict detected. Resolving..."
-            git checkout --ours public/config.js
-            sed -i 's/<<<<<<< HEAD//g' public/config.js
-            sed -i 's/=======//g' public/config.js
-            sed -i 's/>>>>>>> upstream\/main//g' public/config.js
-            git add public/config.js
-            git commit -m "Resolve merge conflict in public/config.js"
-          fi
+          git reset --hard upstream/main
+          git reset -- public/config.js
+          git checkout -- public/config.js
           git reset -- .github/workflows/
           git checkout -- .github/workflows/
-          git commit -m "Sync fork with upstream, excluding workflows"
-          git push origin main
+          git commit -m "Sync fork with upstream, excluding workflows and config"
+          git push origin main --force
