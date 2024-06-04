@@ -27,6 +27,9 @@ jobs:
           if [ $? -ne 0 ]; then
             echo "Merge conflict detected. Resolving..."
             git checkout --ours public/config.js
+            sed -i 's/<<<<<<< HEAD//g' public/config.js
+            sed -i 's/=======//g' public/config.js
+            sed -i 's/>>>>>>> upstream\/main//g' public/config.js
             git add public/config.js
             git commit -m "Resolve merge conflict in public/config.js"
           fi
