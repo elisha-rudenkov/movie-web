@@ -24,6 +24,12 @@ jobs:
           git fetch upstream
           git checkout main
           git merge upstream/main --allow-unrelated-histories --no-commit
+          if [ $? -ne 0 ]; then
+            echo "Merge conflict detected. Resolving..."
+            git checkout --ours public/config.js
+            git add public/config.js
+            git commit -m "Resolve merge conflict in public/config.js"
+          fi
           git reset -- .github/workflows/
           git checkout -- .github/workflows/
           git commit -m "Sync fork with upstream, excluding workflows"
