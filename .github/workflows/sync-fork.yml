@@ -18,7 +18,7 @@ jobs:
           git remote add upstream https://github.com/sussy-code/smov.git
           git fetch upstream
           git checkout main
-          git merge upstream/main --no-commit
+          git merge upstream/main --allow-unrelated-histories --no-commit
           git reset -- .github/workflows/
           git checkout -- .github/workflows/
           git commit -m "Sync fork with upstream, excluding workflows"
