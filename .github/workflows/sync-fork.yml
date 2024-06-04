@@ -23,6 +23,13 @@ jobs:
           git remote add upstream https://github.com/sussy-code/smov.git
           git fetch upstream
           git checkout main
+          
+          # Check if there are changes to pull
+          if git diff --quiet HEAD upstream/main -- ':!public/config.js' ':!.github/workflows'; then
+            echo "No changes to sync. Exiting."
+            exit 0
+          fi
+          
           git reset --hard upstream/main
           git reset -- public/config.js
           git checkout -- public/config.js
